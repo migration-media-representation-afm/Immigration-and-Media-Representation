@@ -82,51 +82,52 @@ The project uses the `pandas`, `numpy`, `matplotlib` and `seaborn` libraries, to
 
 ## Data
 
-Data
-
 The repository does not contain any raw data; this section therefore describes the datasets the notebook works on.
 
-1. Article corpus: CHANGE-it (la Repubblica)
+### 1. Article corpus: CHANGE-it (*la Repubblica*)
 
-A large collection of articles from the Italian newspaper la Repubblica, extracted for the CHANGE-IT task of the EVALITA 2020 evaluation campaign. The file, repubblica.csv, contains the headline, the full text and the URL of each article.
+**What it is.** CHANGE-it is a large collection of articles from the Italian newspaper *la Repubblica*, extracted for the CHANGE-IT task of the EVALITA 2020 evaluation campaign. The file provided, `repubblica.csv`, contains the headline, the full text and the URL of each article.
 
-Structure. Each row is one article, described by three columns:
+**Structure.** Each row is one article, described by three columns:
 
-Column	Content	How we use it
-headline	The headline of the article.	Merged with the body text before tokenization.
-full_text	The full text of the article.	Merged with the headline, then tokenized and searched for nationality terms and keywords.
-url	The web address of the article, which contains its publication date in the form .../YYYY/MM/DD/....	A regular expression extracts year, month and day, which become the columns Anno, Mese and Giorno. The file has no separate date column, so the URL is the only source of the publication date.
+| Column | Content | How we use it |
+|---|---|---|
+| `headline` | The headline of the article. | Merged with the body text before tokenization. |
+| `full_text` | The full text of the article. | Merged with the headline, then tokenized and searched for nationality terms and keywords. |
+| `url` | The web address of the article, which contains its publication date in the form `.../YYYY/MM/DD/...`. | A regular expression extracts year, month and day, which become the columns `Anno`, `Mese` and `Giorno`. The file has no separate date column, so the URL is the only source of the publication date. |
 
-Columns we derive. testo_completo (headline and body merged), tokens (the words of the text), token_filtrati (the tokens left after removing stopwords and very short words) and immigrazione (true if the article contains at least one word of our immigration vocabulary). All the later analyses are computed from these columns.
+**Columns we derive.** `testo_completo` (headline and body merged), `tokens` (the words of the text), `token_filtrati` (the tokens left after removing stopwords and very short words) and `immigrazione` (true if the article contains at least one word of our immigration vocabulary). All the later analyses are computed from these columns.
 
-Period. The analysis covers 2014-2018, i.e. 60 months.
+**Period.** The analysis covers 2014-2018, i.e. 60 months.
 
-2. ISTAT data on foreign residents
+### 2. ISTAT data on foreign residents
 
-An ISTAT dataset with the number of residents who were born abroad or hold a foreign citizenship, for every Italian municipality and for the larger territorial divisions (provinces, regions, macro-areas), provided on a yearly basis from 2002 to 2025. The data come as semicolon-separated CSV files in the folder data/istat/Dati_RCS/, in two series: one by citizenship and one by country of birth. We use only the citizenship files, i.e. those with "cittadinanza" in their name (24 files, which fits one file per year from 2002 to 2025), and concatenate them into a single table, df_cittadinanza. We chose citizenship rather than country of birth because it better matches how newspapers refer to nationality, and because it includes second-generation residents.
+**What it is.** An ISTAT dataset with the number of residents who were born abroad or hold a foreign citizenship, for every Italian municipality and for the larger territorial divisions (provinces, regions, macro-areas), provided on a yearly basis from 2002 to 2025. The data come as semicolon-separated CSV files in the folder `data/istat/Dati_RCS/`, in two series: one by citizenship and one by country of birth. We use only the citizenship files, i.e. those with "cittadinanza" in their name (24 files, which fits one file per year from 2002 to 2025), and concatenate them into a single table, `df_cittadinanza`. We chose citizenship rather than country of birth because it better matches how newspapers refer to nationality, and because it includes second-generation residents.
 
-Structure. Each row gives the number of residents for one territory, one year and one citizenship:
+**Structure.** Each row gives the number of residents for one territory, one year and one citizenship:
 
-Column	Content
-Anno	The reference year.
-Denominazione, Codice Istat	The name and ISTAT code of the territory. The row Italia holds the national totals.
-Stato di cittadinanza, Codice stato di cittadinanza/nascita	The citizenship (country) and its code.
-Maschi, Femmine, Totale	Number of male residents, female residents and total.
+| Column | Content |
+|---|---|
+| `Anno` | The reference year. |
+| `Denominazione`, `Codice Istat` | The name and ISTAT code of the territory. The row `Italia` holds the national totals. |
+| `Stato di cittadinanza`, `Codice stato di cittadinanza/nascita` | The citizenship (country) and its code. |
+| `Maschi`, `Femmine`, `Totale` | Number of male residents, female residents and total. |
 
-What we keep. Only the years 2014-2018 (to match the period covered by the articles), only the national level (Denominazione equal to Italia) and the five countries of interest, using the total counts. The finer territorial breakdown (municipalities, provinces, regions) is not used. The total foreign population of each year is the sum of Totale over all citizenships except Italia (i.e. excluding Italian citizens). It is the denominator used to compute each nationality's share of the foreign population, which is then compared with its share of media coverage.
+**What we keep.** Only the years 2014-2018 (to match the period covered by the articles), only the national level (`Denominazione` equal to `Italia`) and the five countries of interest, using the total counts. The finer territorial breakdown (municipalities, provinces, regions) is not used. The total foreign population of each year is the sum of `Totale` over all citizenships except `Italia` (i.e. excluding Italian citizens). It is the denominator used to compute each nationality's share of the foreign population, which is then compared with its share of media coverage.
 
-3. List of municipalities
+### 3. List of municipalities
 
-elenco_comuni.csv, provided together with the ISTAT data, contains the identification codes and further information on every Italian municipality, including its province, region and geographic division. It is loaded as a geographic reference, but the analyses reported in the notebook are carried out at national level, so it is not needed to reproduce the figures.
+`elenco_comuni.csv`, provided together with the ISTAT data, contains the identification codes and further information on every Italian municipality, including its province, region and geographic division. It is loaded as a geographic reference, but the analyses reported in the notebook are carried out at national level, so it is not needed to reproduce the figures.
 
-Expected folder layout
+### Expected folder layout
 
 To run the notebook, the files must be placed as follows:
 
+```
 data/
 ├── CHANGE-it/repubblica.csv
 └── istat/
     ├── comuni/elenco_comuni.csv
     └── Dati_RCS/                # ISTAT files (those with "cittadinanza" in the name are used)
-
+```
 
