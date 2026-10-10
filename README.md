@@ -4,7 +4,7 @@ This project investigates three questions concerning the relationship between im
 
 The analysis, written in Python, focuses on **five foreign communities** (Morocco, Romania, China, Nigeria, France) and covers the period 2014-2018. It compares their **media representation** with their **actual demographic presence** as recorded by ISTAT (the Italian national statistics institute).
 
-> **Note on the data.** The article corpus (the CHANGE-it dataset) contains the full text of newspaper articles protected by copyright and is **not included in this repository**. The notebook is therefore shared for demonstration purposes and **cannot be run without the original data**. The results (tables and charts) are, however, saved in the notebook and in the [`output/`](output/) folder, so they can be browsed directly. See the [Data](#data) section.
+> **Note on the data.** The article corpus (the CHANGE-it dataset) contains the full text of newspaper articles protected by copyright and is **not included in this repository**. The notebook is therefore shared for demonstration purposes and **cannot be run without the original data**. The results (tables and charts) are, however, saved in the notebook. See the [Data](#data) section.
 
 ## Authors
 
